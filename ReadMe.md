@@ -12,6 +12,6 @@ I had some problems with the program, but thankfully with time and research i ma
 
 ## How to Use the Project
 
-## Tests
-
 ## Licenses
+
+License is located in the "doc" folder.

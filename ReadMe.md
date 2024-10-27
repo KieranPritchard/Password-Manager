@@ -1,5 +1,14 @@
 # Password Manager
 
+<div align="center">
+    <img alt="GitHub Created At" src="https://img.shields.io/github/created-at/KieranPritchard/Password-Manager">
+    <img alt="GitHub License" src="https://img.shields.io/github/license/KieranPritchard/Password-Manager">
+    <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/t/KieranPritchard/Password-Manager">
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/KieranPritchard/Password-Manager">
+    <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/KieranPritchard/Password-Manager">
+    <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/KieranPritchard/Password-Manager">
+</div>
+
 ## Project Description
 
 This project is a password manager, it allows users to save their usernames and password to an encrypted file for safe keeping and easy access. 

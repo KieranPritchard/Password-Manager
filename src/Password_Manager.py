@@ -7,7 +7,7 @@ import os
 def load_key():
     
     # Contains key path containing key
-    key_path = "Python/Projects/Password Manager/key.key"
+    key_path = "Python/Projects/Password-Manager/res"
 
     # Returns boolean value when checking if file exists
     file_exists = os.path.isfile(key_path)

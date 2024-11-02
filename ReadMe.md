@@ -40,8 +40,8 @@ I had some problems with the program, but thankfully with time and research i ma
 
 5. **Running The Code**
 
-* Navigate to the directory storing the project. Then use this command: `python Password_Manager.py`
-* Follow the onscreen prompts for login and accesssing features
+* Navigate to the directory storing the project. Then use this command: `python Password_Manager.py`.
+* Follow the onscreen prompts for login and accesssing features.
 
 
 ## Licenses

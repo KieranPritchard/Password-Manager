@@ -6,7 +6,7 @@ import os
 # Loads the key at the start of the program.
 def load_key():
     # Contains key path containing key
-    key_path = "Password_Manager/res/key.key"
+    key_path = "Password-Manager/res/key.key"
 
     # Returns boolean value when checking if file exists
     file_exists = os.path.isfile(key_path)
@@ -70,7 +70,7 @@ def add_credentials(cipher=Fernet(load_key())):
 
     # Writes them to a file.
     try:
-        with open("Password_Manager/res/Password Database.txt", "a") as file:
+        with open("Password-Manager/res/Password Database.txt", "a") as file:
             file.write(ciphertext_credentials.decode() + '\n')
     except Exception as e:
         print(f"Error encountered when adding user credentials: {e}")
@@ -82,7 +82,7 @@ def read_credentials(cipher=Fernet(load_key())):
     
     try:
         # Opens file then iterates through each of the lines, decrypting and adding to a list as it goes.    
-        with open("Password_Manager/res/Password Database.txt", "r") as file:
+        with open("Password-Manager/res/Password Database.txt", "r") as file:
             for x in file:
                 decrypted_line = cipher.decrypt(x).decode()
                 credentials.append(decrypted_line)
@@ -105,7 +105,7 @@ def edit_credentials(cipher=Fernet(load_key())):
 
     try:
         # Opens the file then loops through it to find the credentials that need editing
-        with open("Password_Manager/res/Password Database.txt", "r") as file:
+        with open("Password-Manager/res/Password Database.txt", "r") as file:
             for x in file:
                 decrypted_line = cipher.decrypt(x).decode()
                 if service_to_edit.capitalize() in decrypted_line:
@@ -116,7 +116,7 @@ def edit_credentials(cipher=Fernet(load_key())):
 
     try:
         # Writes the updated arrays to the file.
-        with open("Password_Manager/res/Password Database.txt", "w") as file:
+        with open("Password-Manager/res/Password Database.txt", "w") as file:
             for x in credentials:
                 encrypted_line = cipher.encrypt(x.encode())
                 file.write(encrypted_line.decode() + '\n')
@@ -133,7 +133,7 @@ def remove_credentials(cipher=Fernet(load_key())):
     
     try:
         # Opens the text file with credentials, it then loops through the list
-        with open("Password_Manager/res/Password Database.txt", "r") as file:
+        with open("Password-Manager/res/Password Database.txt", "r") as file:
             for x in file:
                 decrypted_line = cipher.decrypt(x).decode()
 
@@ -142,7 +142,7 @@ def remove_credentials(cipher=Fernet(load_key())):
                     credentials.append(decrypted_line)
 
         # Writes the remaining credentials to the credentials file
-        with open("Password_Manager/res/Password Database.txt", "w") as file:
+        with open("Password-Manager/res/Password Database.txt", "w") as file:
             for x in credentials:
                 encrypted_line = cipher.encrypt(x.encode())
                 file.write(encrypted_line.decode() + '\n')

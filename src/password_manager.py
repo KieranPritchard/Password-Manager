@@ -34,3 +34,30 @@ class password_manager():
         except Exception as e:
             # Outputs the error
             print(f"Error {e}")
+
+    # Function to read the passwords stored
+    def read_password(self):
+        # Creates a cipher object
+        cipher = Fernet(self.key)
+
+        # stores the credentials in a list
+        credentials = []
+
+        # Trys to open the database and get the credentials
+        try:
+            # Opens the database file
+            with open(self.database) as f:
+                # loops through the file
+                for line in f:
+                    # Decrypts the line from the file
+                    decrypted = cipher.decrypt(line).decode()
+                    # Adds the line to the list
+                    credentials.append(decrypted)
+        except Exception as e:
+            # Outputs the error
+            print(f"Error: {e}")
+
+        # loops through the list
+        for cred in credentials:
+            # Outputs the credentials
+            print(cred)

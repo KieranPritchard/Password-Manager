@@ -29,6 +29,8 @@ class password_manager():
         try:
             # Opens the file listed in the database
             with open(self.database) as f:
+                # Writes credentials to the file
                 f.write(encrypted_creds.decode() + '\n')
         except Exception as e:
+            # Outputs the error
             print(f"Error {e}")

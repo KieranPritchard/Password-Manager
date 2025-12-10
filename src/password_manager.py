@@ -1,10 +1,8 @@
 from cryptography.fernet import Fernet
-import hashlib
-import sys
 import os
 
 # class for password manager
-class password_manager():
+class passwordManager():
     def __init__(self, key, database):
         self.key = key
         self.database = database
@@ -61,3 +59,42 @@ class password_manager():
         for cred in credentials:
             # Outputs the credentials
             print(cred)
+    
+    def edit_credentials(self):
+        # Creates a cipher object
+        cipher = Fernet(self.key)
+
+        # Asks the user to input their credentials
+        service = input("Please input the service you want to edit: ")
+        username = input("Please input the new username: ")
+        password = input("Please input the new password: ")
+
+        # Stores credentials
+        edited_creds = []
+
+        # Tries to open the password file and add the credentials
+        try:
+            # Opens the file to read it
+            with open(self.database, "r") as f:
+                # loops over the file
+                for cred in f:
+                    # Decrypts the lines
+                    decrypted_cred = cipher.decrypt(cred).decode()
+                    #Check if the credentials match the edited ones
+                    if service in decrypted_cred:
+                        # adds the edit to the decrypted line
+                        decrypted_cred = f"Service: {service.capitalize()} Username: {username}, Password: {password}."
+                    # Adds the decrypted credential to a list
+                    edited_creds.append(decrypted_cred)
+            
+            # Opens the file to write the edit to it
+            with open(self.database, "w") as f:
+                # Loops over it again and adds back in the files
+                for cred in edited_creds:
+                    # Encrypts the credential
+                    encrypted_cred = cipher.encrypt(cred.encode())
+                    # Adds it back to file
+                    f.write(encrypted_cred.decode() + '\n')
+        # Outputs error message
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")

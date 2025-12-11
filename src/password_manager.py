@@ -9,9 +9,11 @@ class passwordManager():
         self.__database = database
 
     # Function to add password
-    def add_password(self):
-        # Creates a cipher object
-        cipher = Fernet(self.__key)
+    def addPassword(self):
+        # Creates a cipher object with the key
+        with open(self.__key, "rb") as f:
+            key = f.read()
+        cipher = Fernet(key)
         
         # Asks the user to input their username, password, and services
         username = input("Please input username: ")
@@ -19,7 +21,7 @@ class passwordManager():
         service = input("Please input service: ")
 
         # Formats the users credentials as a string 
-        credentials = f"Service: {service}, Username, {username}, Password: {password}"
+        credentials = f"Service: {service}, Username: {username}, Password: {password}"
 
         # Encrypts the credentials using fernet
         encrypted_creds = cipher.encrypt(credentials.encode())
@@ -27,7 +29,7 @@ class passwordManager():
         # Trys opening a file
         try:
             # Opens the file listed in the database
-            with open(self.__databasem, "a") as f:
+            with open(self.__database, "a") as f:
                 # Writes credentials to the file
                 f.write(encrypted_creds.decode() + '\n')
         except Exception as e:
@@ -35,9 +37,11 @@ class passwordManager():
             print(f"Error Encountered: {e}")
 
     # Function to read the passwords stored
-    def read_password(self):
-        # Creates a cipher object
-        cipher = Fernet(self.__key)
+    def readPassword(self):
+        # Creates a cipher object with the key
+        with open(self.__key, "rb") as f:
+            key = f.read()
+        cipher = Fernet(key)
 
         # stores the credentials in a list
         credentials = []
@@ -49,20 +53,23 @@ class passwordManager():
                 # loops through the file
                 for line in f:
                     # Decrypts the line from the file
-                    decrypted = cipher.decrypt(line).decode()
+                    decrypted = cipher.decrypt(line.strip().encode()).decode()
                     # Adds the line to the list
                     credentials.append(decrypted)
         except Exception as e:
             # Outputs the error
             print(f"Error: {e}")
+
         # loops through the list
         for cred in credentials:
             # Outputs the credentials
             print(cred)
     
-    def edit_credentials(self):
-        # Creates a cipher object
-        cipher = Fernet(self.__key)
+    def editCredentials(self):
+        # Creates a cipher object with the key
+        with open(self.__key, "rb") as f:
+            key = f.read()
+        cipher = Fernet(key)
 
         # Asks the user to input their credentials
         service = input("Please input the service you want to edit: ")
@@ -79,13 +86,14 @@ class passwordManager():
                 # loops over the file
                 for cred in f:
                     # Decrypts the lines
-                    decrypted_cred = cipher.decrypt(cred).decode()
+                    decrypted_cred = cipher.decrypt(cred.strip().encode()).decode()
                     #Check if the credentials match the edited ones
-                    if service in decrypted_cred:
+                    if decrypted_cred.lower().startswith(f"service: {service.lower()}"):
                         # adds the edit to the decrypted line
-                        decrypted_cred = f"Service: {service.capitalize()} Username: {username}, Password: {password}."
+                        decrypted_cred = f"Service: {service}, Username: {username}, Password: {password}"
                     # Adds the decrypted credential to a list
                     edited_creds.append(decrypted_cred)
+
             # Opens the file to write the edit to it
             with open(self.__database, "w") as f:
                 # Loops over it again and adds back in the files
@@ -94,13 +102,17 @@ class passwordManager():
                     encrypted_cred = cipher.encrypt(cred.encode())
                     # Adds it back to file
                     f.write(encrypted_cred.decode() + '\n')
+
         # Outputs error message
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
 
-    def remove_credentials(self):
-        # Creates a cipher object
-        cipher = Fernet(self.__key)
+    def removeCredentials(self):
+        # Creates a cipher object with the key
+        with open(self.__key, "rb") as f:
+            key = f.read()
+        cipher = Fernet(key)
+
         # Asks the user for which service and its credentials to remove.
         service_to_remove = input("Please input the service you want to remove: ")
         # Array where credentials are added to.
@@ -113,11 +125,12 @@ class passwordManager():
                 # Loops through the credentials in the file
                 for cred in f:
                     # decrypts the current line 
-                    decrypted_line = cipher.decrypt(cred).decode()
+                    decrypted_line = cipher.decrypt(cred.strip().encode()).decode()
                     # Adds credentials that aren't the ones to remove
-                    if service_to_remove not in decrypted_line:
+                    if not decrypted_line.lower().startswith(f"service: {service_to_remove.lower()}"):
                         # Adds the credentails to the list
                         credentials.append(decrypted_line)
+
             # Writes the remaining credentials to the credentials file
             with open(self.__database, "w") as f:
                 # Loops through the credentials in the list
@@ -126,6 +139,7 @@ class passwordManager():
                     encrypted_line = cipher.encrypt(cred.encode())
                     # Writes it to the file
                     f.write(encrypted_line.decode() + '\n')
+
         # Catches errors and outputs it
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
@@ -142,16 +156,16 @@ def menu(object):
         # Checks what function to use based on users selection
         if user_selection == 1:
             # Calls the add credentials method
-            object.add_credentials()
+            object.addPassword()
         elif user_selection == 2:
             # Calls the read credentials method
-            object.read_credentials()
+            object.readPassword()
         elif user_selection == 3:
             # Calls the edit credentials method
-            object.edit_credentials()
+            object.editCredentials()
         elif user_selection == 4:
             # calls the remove credentials method
-            object.remove_credentials()
+            object.removeCredentials()
         elif user_selection == 5:
             sys.exit()
         else:
@@ -160,9 +174,12 @@ def menu(object):
         print(f"An unexpected error occurred: {e}")
 
 def main():
+    # Gets base directory
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
     # Gets the key and the database
-    key = "Password-Manager/res/key.key"
-    database = "Password-Manager/res/Password Database.txt"
+    key = os.path.join(BASE_DIR, "res/key.key")
+    database = os.path.join(BASE_DIR, "res/Password Database.txt")
 
     # Creates manager object
     manager = passwordManager(key,database)

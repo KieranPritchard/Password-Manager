@@ -1,5 +1,6 @@
 from cryptography.fernet import Fernet
 import os
+import sys
 
 # class for password manager
 class passwordManager():
@@ -128,3 +129,29 @@ class passwordManager():
         # Catches errors and outputs it
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
+
+# Standalone function for the main, with object passed in
+def menu(object):
+    print("=" * 30)
+    print("(1) - Add Credentials\n(2) - Read Credentials\n(3) - Edit Credentials\n(4) - Remove Credentials\n(5) - Exit")
+    print("=" * 30)
+
+    try:
+        # Asks the user for what option they want
+        user_selection = int(input("Please Select Option: "))
+
+        # Checks what function to use based on users selection
+        if user_selection == 1:
+            object.add_credentials()
+        elif user_selection == 2:
+            object.read_credentials()
+        elif user_selection == 3:
+            object.edit_credentials()
+        elif user_selection == 4:
+            object.remove_credentials()
+        elif user_selection == 5:
+            sys.exit()
+        else:
+            print("Invalid Input")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")

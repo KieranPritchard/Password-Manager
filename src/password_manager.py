@@ -142,12 +142,16 @@ def menu(object):
 
         # Checks what function to use based on users selection
         if user_selection == 1:
+            # Calls the add credentials method
             object.add_credentials()
         elif user_selection == 2:
+            # Calls the read credentials method
             object.read_credentials()
         elif user_selection == 3:
+            # Calls the edit credentials method
             object.edit_credentials()
         elif user_selection == 4:
+            # calls the remove credentials method
             object.remove_credentials()
         elif user_selection == 5:
             sys.exit()
@@ -155,3 +159,25 @@ def menu(object):
             print("Invalid Input")
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
+
+def main():
+    # Gets the key and the database
+    key = "Password-Manager/res/key.key"
+    database = "Password-Manager/res/Password Database.txt"
+
+    # Creates manager object
+    manager = passwordManager(key,database)
+
+    # Header for the program
+    print("=" * 30)
+    print("Password Manager")
+    print("=" * 30)
+    
+    # Runs the menu indefinately intill it is broken
+    while True:
+        # Calls the menu each time
+        menu(manager)
+
+# Starts the progam
+if __name__ =="__main__":
+    main()

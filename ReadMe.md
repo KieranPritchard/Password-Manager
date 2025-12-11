@@ -17,6 +17,10 @@
 
 ## Project Description
 
+### Disclaimer
+
+This project was recently updated to take advantage of OOP (Object Orientated Programming). Alongside this, I updated comments and certain flows so it would be more focused around being a demonstration. My changes are detailed in a new file with the old code being in another for comparison reasons. 
+
 ### Objective:
 To create another cyber security based project, around password security. I also wanted to pursue a project that uses CRUD (Create, Read, Update, Delete), to build skills with persistent storage.
 ### Technology and Tools Used:

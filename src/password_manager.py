@@ -5,13 +5,13 @@ import sys
 # class for password manager
 class passwordManager():
     def __init__(self, key, database):
-        self.key = key
-        self.database = database
+        self.__key = key
+        self.__database = database
 
     # Function to add password
     def add_password(self):
         # Creates a cipher object
-        cipher = Fernet(self.key)
+        cipher = Fernet(self.__key)
         
         # Asks the user to input their username, password, and services
         username = input("Please input username: ")
@@ -27,17 +27,17 @@ class passwordManager():
         # Trys opening a file
         try:
             # Opens the file listed in the database
-            with open(self.database) as f:
+            with open(self.__databasem, "a") as f:
                 # Writes credentials to the file
                 f.write(encrypted_creds.decode() + '\n')
         except Exception as e:
             # Outputs the error
-            print(f"Error {e}")
+            print(f"Error Encountered: {e}")
 
     # Function to read the passwords stored
     def read_password(self):
         # Creates a cipher object
-        cipher = Fernet(self.key)
+        cipher = Fernet(self.__key)
 
         # stores the credentials in a list
         credentials = []
@@ -45,7 +45,7 @@ class passwordManager():
         # Trys to open the database and get the credentials
         try:
             # Opens the database file
-            with open(self.database) as f:
+            with open(self.__database) as f:
                 # loops through the file
                 for line in f:
                     # Decrypts the line from the file
@@ -62,7 +62,7 @@ class passwordManager():
     
     def edit_credentials(self):
         # Creates a cipher object
-        cipher = Fernet(self.key)
+        cipher = Fernet(self.__key)
 
         # Asks the user to input their credentials
         service = input("Please input the service you want to edit: ")
@@ -75,7 +75,7 @@ class passwordManager():
         # Tries to open the password file and add the credentials
         try:
             # Opens the file to read it
-            with open(self.database, "r") as f:
+            with open(self.__database, "r") as f:
                 # loops over the file
                 for cred in f:
                     # Decrypts the lines
@@ -87,7 +87,7 @@ class passwordManager():
                     # Adds the decrypted credential to a list
                     edited_creds.append(decrypted_cred)
             # Opens the file to write the edit to it
-            with open(self.database, "w") as f:
+            with open(self.__database, "w") as f:
                 # Loops over it again and adds back in the files
                 for cred in edited_creds:
                     # Encrypts the credential
@@ -100,7 +100,7 @@ class passwordManager():
 
     def remove_credentials(self):
         # Creates a cipher object
-        cipher = Fernet(self.key)
+        cipher = Fernet(self.__key)
         # Asks the user for which service and its credentials to remove.
         service_to_remove = input("Please input the service you want to remove: ")
         # Array where credentials are added to.
@@ -109,7 +109,7 @@ class passwordManager():
         # Try's to open the file and remove the credentials
         try:
             # Opens the text file with credentials, it then loops through the list
-            with open(self.database, "r") as f:
+            with open(self.__database, "r") as f:
                 # Loops through the credentials in the file
                 for cred in f:
                     # decrypts the current line 
@@ -119,7 +119,7 @@ class passwordManager():
                         # Adds the credentails to the list
                         credentials.append(decrypted_line)
             # Writes the remaining credentials to the credentials file
-            with open(self.database, "w") as f:
+            with open(self.__database, "w") as f:
                 # Loops through the credentials in the list
                 for cred in credentials:
                     # Encrypts the current line
@@ -132,7 +132,6 @@ class passwordManager():
 
 # Standalone function for the main, with object passed in
 def menu(object):
-    print("=" * 30)
     print("(1) - Add Credentials\n(2) - Read Credentials\n(3) - Edit Credentials\n(4) - Remove Credentials\n(5) - Exit")
     print("=" * 30)
 
